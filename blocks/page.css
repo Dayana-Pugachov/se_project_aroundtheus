@@ -1,0 +1,25 @@
+.page {
+  background-color: black;
+  color: white;
+  padding: 0 20px 0 20px;
+}
+
+.page__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.page__section {
+  max-width: 880px;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 580px) {
+  .page {
+    padding: 0;
+  }
+}
