@@ -10,3 +10,5 @@
 - Flat BEM file structure
 
 ### GitHub Pages Link
+
+https://dayana-pugachov.github.io/se_project_aroundtheus/
