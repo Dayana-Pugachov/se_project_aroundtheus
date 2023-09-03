@@ -79,3 +79,9 @@ initialCards.forEach((data) => {
   const cardElement = getCardElement(data);
   galleryList.append(cardElement);
 });
+
+/*for (let i = 0; i < initialCards.length; i++) {
+  const card = initialCards[i];
+  const cardElement = getCardElement(card);
+  galleryList.append(cardElement);
+}*/
