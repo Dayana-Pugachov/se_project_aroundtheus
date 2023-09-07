@@ -3,12 +3,26 @@
   flex-direction: column;
   width: 282px;
   color: black;
+  position: relative;
 }
 
 .card__image {
   width: 282px;
   height: 282px;
   border-radius: 10px 10px 0 0;
+}
+
+.card__trash-button {
+  position: absolute;
+  width: 18px;
+  height: 19.3px;
+  right: 15px;
+  top: 18px;
+}
+
+.card__trash-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
 
 .card__description {
@@ -36,6 +50,10 @@
   border: none;
   width: 21px;
   height: 18px;
+}
+
+.card__like-button_active {
+  background: url("../images/active-heart.svg");
 }
 
 .card__like-button:hover {

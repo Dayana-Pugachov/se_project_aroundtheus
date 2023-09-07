@@ -50,7 +50,7 @@
       </footer>
     </div>
 
-    <div class="modal">
+    <div class="modal" id="edit-modal">
       <div class="modal__container">
         <button class="modal__close" type="button"></button>
         <p class="modal__heading">Edit profile</p>
@@ -74,9 +74,46 @@
       </div>
     </div>
 
+    <div class="modal" id="add-modal">
+      <div class="modal__container">
+        <button class="modal__close" type="button" id="addModal-close"></button>
+        <p class="modal__heading">New place</p>
+        <form class="modal__form" id="addCard-modal-form">
+          <input
+            class="modal__input"
+            type="text"
+            name="title"
+            placeholder="Title"
+            id="cardTitle-input-js"
+          />
+          <input
+            class="modal__input"
+            type="text"
+            name="link"
+            placeholder="Image link"
+            id="cardImageLink-input-js"
+          />
+          <button class="modal__save" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal modal_image-preview" id="previewModal">
+      <div class="modal__wrapper">
+        <button
+          class="modal__close"
+          type="button"
+          id="previewModal-close"
+        ></button>
+        <img src="" alt="" class="modal__image" />
+        <p class="modal__description"></p>
+      </div>
+    </div>
+
     <template id="card-template">
       <li class="card gallery__card">
         <img src="" alt="" class="card__image" />
+        <img src="./images/Trash.svg" alt="delete" class="card__trash-button" />
         <div class="card__description">
           <h2 class="card__title"></h2>
           <button
