@@ -68,32 +68,24 @@ const newCardImageLinkInput = profileAddModal.querySelector(
 /* EVENT LISTENERS */
 
 profileEditButton.addEventListener("click", () => {
-  modalOpen(profileEditModal);
+  openModal(profileEditModal);
   editProfileTitleInput.value = profileTitle.textContent;
   editProfileDescriptionInput.value = profileDescription.textContent;
 });
 
-editModalCloseButton.addEventListener("click", () => {
-  modalClose(profileEditModal);
-});
-
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
-profileAddButton.addEventListener("click", () => modalOpen(profileAddModal));
-
-addModalCloseButton.addEventListener("click", () => {
-  modalClose(profileAddModal);
-});
+profileAddButton.addEventListener("click", () => openModal(profileAddModal));
 
 profileAddFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
 /* FUNCTIONS */
 
-function modalOpen(modal) {
+function openModal(modal) {
   modal.classList.add("modal_opened");
 }
 
-function modalClose(modal) {
+function closeModal(modal) {
   modal.classList.remove("modal_opened");
 }
 
@@ -101,7 +93,7 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileTitle.textContent = editProfileTitleInput.value;
   profileDescription.textContent = editProfileDescriptionInput.value;
-  modalClose(profileEditModal);
+  closeModal(profileEditModal);
 }
 
 function getCardElement(data) {
@@ -112,13 +104,10 @@ function getCardElement(data) {
   const trashButton = cardElement.querySelector(".card__trash-button");
 
   cardImage.addEventListener("click", () => {
-    modalOpen(previewImageModal);
+    openModal(previewImageModal);
     previewImage.setAttribute("src", data.link);
     previewImage.setAttribute("alt", data.name);
     previewDescription.textContent = data.name;
-  });
-  previewModalCloseButton.addEventListener("click", () => {
-    modalClose(previewImageModal);
   });
 
   likeButton.addEventListener("click", () => {
@@ -148,7 +137,12 @@ function handleAddCardFormSubmit(evt) {
     link,
   });
   galleryList.prepend(cardElement);
-  newCardTitleInput.value = null;
-  newCardImageLinkInput.value = null;
-  modalClose(profileAddModal);
+  evt.target.reset();
+  closeModal(profileAddModal);
 }
+
+const closeButtons = document.querySelectorAll(".modal__close");
+closeButtons.forEach((button) => {
+  const modalPopup = button.closest(".modal");
+  button.addEventListener("click", () => closeModal(modalPopup));
+});
