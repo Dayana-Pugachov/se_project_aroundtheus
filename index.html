@@ -54,21 +54,35 @@
       <div class="modal__container">
         <button class="modal__close" type="button"></button>
         <p class="modal__heading">Edit profile</p>
-        <form class="modal__form">
-          <input
-            class="modal__input"
-            type="text"
-            name="title"
-            placeholder="Name"
-            id="modal__input_title-js"
-          />
-          <input
-            class="modal__input"
-            type="text"
-            name="description"
-            placeholder="Description"
-            id="modal__input_description-js"
-          />
+        <form class="modal__form" novalidate>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="text"
+              name="title"
+              placeholder="Name"
+              id="modal__input_title-js"
+              required
+              minlength="2"
+              maxlength="40"
+            />
+            <span class="modal__input-error modal__input_title-js-error"></span>
+          </label>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="text"
+              name="description"
+              placeholder="Description"
+              id="modal__input_description-js"
+              required
+              minlength="2"
+              maxlength="200"
+            />
+            <span
+              class="modal__input-error modal__input_description-js-error"
+            ></span>
+          </label>
           <button class="modal__save" type="submit">Save</button>
         </form>
       </div>
@@ -78,21 +92,33 @@
       <div class="modal__container">
         <button class="modal__close" type="button" id="addModal-close"></button>
         <p class="modal__heading">New place</p>
-        <form class="modal__form" id="addCard-modal-form">
-          <input
-            class="modal__input"
-            type="text"
-            name="title"
-            placeholder="Title"
-            id="cardTitle-input-js"
-          />
-          <input
-            class="modal__input"
-            type="text"
-            name="link"
-            placeholder="Image link"
-            id="cardImageLink-input-js"
-          />
+        <form class="modal__form" id="addCard-modal-form" novalidate>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="text"
+              name="title"
+              placeholder="Title"
+              id="cardTitle-input-js"
+              required
+              minlength="1"
+              maxlength="30"
+            />
+            <span class="modal__input-error cardTitle-input-js-error"></span>
+          </label>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="url"
+              name="link"
+              placeholder="Image link"
+              id="cardImageLink-input-js"
+              required
+            />
+            <span
+              class="modal__input-error cardImageLink-input-js-error"
+            ></span>
+          </label>
           <button class="modal__save" type="submit">Create</button>
         </form>
       </div>
@@ -126,5 +152,6 @@
     </template>
 
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validation.js"></script>
   </body>
 </html>

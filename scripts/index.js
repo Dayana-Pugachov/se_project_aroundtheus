@@ -82,10 +82,12 @@ profileAddFormElement.addEventListener("submit", handleAddCardFormSubmit);
 /* FUNCTIONS */
 
 function openModal(modal) {
+  document.addEventListener("keydown", handleEsc);
   modal.classList.add("modal_opened");
 }
 
 function closeModal(modal) {
+  document.removeEventListener("keydown", handleEsc);
   modal.classList.remove("modal_opened");
 }
 
@@ -146,3 +148,19 @@ closeButtons.forEach((button) => {
   const modalPopup = button.closest(".modal");
   button.addEventListener("click", () => closeModal(modalPopup));
 });
+
+const modalList = Array.from(document.querySelectorAll(".modal"));
+modalList.forEach((modal) => {
+  modal.addEventListener("mousedown", (evt) => {
+    if (evt.target.classList.contains("modal")) {
+      closeModal(modal);
+    }
+  });
+});
+
+const handleEsc = (evt) => {
+  if (evt.key === "Escape") {
+    const openModal = document.querySelector(".modal_opened");
+    closeModal(openModal);
+  }
+};

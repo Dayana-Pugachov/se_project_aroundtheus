@@ -67,6 +67,13 @@
   width: 100%;
 }
 
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  position: relative;
+}
+
 .modal__input {
   border: none;
   outline: none;
@@ -77,6 +84,26 @@
   font-family: "Inter", arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
+}
+
+.modal__input_type_error {
+  border-bottom: #f00 solid 1px;
+}
+
+/*.modal__input-error {
+  margin-bottom: 30px;
+}*/
+
+.modal__input-error_active {
+  color: #f00;
+  font-family: "Inter", arial, sans-serif;
+  max-height: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  top: 30px;
+  padding-top: 5px;
+  margin-bottom: 13px;
 }
 
 .modal__input:last-of-type {
@@ -92,7 +119,14 @@
   font-size: 18px;
   font-weight: 400;
   padding: 18px 0;
-  margin-top: 48px;
+  margin-top: 18px;
+}
+
+.modal__save_disabled {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 17.2px 0;
 }
 
 .modal_image-preview {
