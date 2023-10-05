@@ -43,11 +43,10 @@ const profileAddFormElement = document.querySelector("#addCard-modal-form");
 const profileAddModal = document.querySelector("#add-modal");
 const profileAddButton = document.querySelector(".profile__add-button");
 
-const editProfileTitleInput = profileFormElement.querySelector(
-  "#modal__input_title-js"
-);
+const editProfileTitleInput =
+  profileFormElement.querySelector("#name-input-js");
 const editProfileDescriptionInput = profileFormElement.querySelector(
-  "#modal__input_description-js"
+  "#description-input-js"
 );
 
 const galleryList = document.querySelector(".gallery__list");
