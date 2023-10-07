@@ -142,16 +142,13 @@ function handleAddCardFormSubmit(evt) {
   closeModal(profileAddModal);
 }
 
-const closeButtons = document.querySelectorAll(".modal__close");
-closeButtons.forEach((button) => {
-  const modalPopup = button.closest(".modal");
-  button.addEventListener("click", () => closeModal(modalPopup));
-});
-
 const modalList = Array.from(document.querySelectorAll(".modal"));
 modalList.forEach((modal) => {
   modal.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("modal")) {
+      closeModal(modal);
+    }
+    if (evt.target.classList.contains("modal__close")) {
       closeModal(modal);
     }
   });
