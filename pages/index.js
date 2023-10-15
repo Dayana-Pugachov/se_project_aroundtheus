@@ -1,3 +1,6 @@
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+
 const initialCards = [
   {
     name: "Yosemite Valley",
@@ -45,7 +48,6 @@ const editProfileDescriptionInput = profileFormElement.querySelector(
   "#description-input-js"
 );
 
-// CARD SELECTORS
 const galleryList = document.querySelector(".gallery__list");
 
 const newCardTitleInput = profileAddModal.querySelector("#cardTitle-input-js");
@@ -93,14 +95,10 @@ function handleImageClick() {
     ".modal__description"
   );
 
-  //open preview image
   openModal(previewImageModal);
   previewImage.setAttribute("src", this._link);
   previewImage.setAttribute("alt", this._name);
   previewDescription.textContent = this._name;
-
-  //close preview image
-  closeModal(previewImageModal);
 }
 
 initialCards.forEach((data) => {
@@ -147,4 +145,22 @@ const handleEsc = (evt) => {
   }
 };
 
-import Card from "../components/Card.js";
+//FORM INIT//
+
+const options = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__save",
+  inactiveButtonClass: "modal__save_disabled",
+  inputErrorClass: "modal__input_type_error",
+  errorClass: "modal__input-error_active",
+};
+
+const editFormModal = document.querySelector("#edit-modal");
+const cardFormModal = document.querySelector("#add-modal");
+
+const editFormValidator = new FormValidator(options, editFormModal);
+const cardFormValidator = new FormValidator(options, cardFormModal);
+
+editFormValidator.enableValidation();
+cardFormValidator.enableValidation();
