@@ -123,6 +123,7 @@ function handleAddCardFormSubmit(evt) {
   const cardElement = card.generateCard();
   galleryList.prepend(cardElement);
   evt.target.reset();
+  cardFormValidator.toggleButtonState();
   closeModal(profileAddModal);
 }
 
