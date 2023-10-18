@@ -55,6 +55,12 @@ const newCardImageLinkInput = profileAddModal.querySelector(
   "#cardImageLink-input-js"
 );
 
+const previewImageModal = document.querySelector("#previewModal");
+const previewImage = previewImageModal.querySelector(".modal__image");
+const previewDescription = previewImageModal.querySelector(
+  ".modal__description"
+);
+
 /* EVENT LISTENERS */
 
 profileEditButton.addEventListener("click", () => {
@@ -88,22 +94,21 @@ function handleProfileFormSubmit(evt) {
   closeModal(profileEditModal);
 }
 
-function handleImageClick() {
-  const previewImageModal = document.querySelector("#previewModal");
-  const previewImage = previewImageModal.querySelector(".modal__image");
-  const previewDescription = previewImageModal.querySelector(
-    ".modal__description"
-  );
-
+function handleImageClick(link, name) {
   openModal(previewImageModal);
-  previewImage.setAttribute("src", this._link);
-  previewImage.setAttribute("alt", this._name);
-  previewDescription.textContent = this._name;
+  previewImage.setAttribute("src", link);
+  previewImage.setAttribute("alt", name);
+  previewDescription.textContent = name;
+}
+
+function createCard(data) {
+  const card = new Card(data, "#card-template", handleImageClick);
+  const cardElement = card.generateCard();
+  return cardElement;
 }
 
 initialCards.forEach((data) => {
-  const card = new Card(data, "#card-template", handleImageClick);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(data);
   galleryList.append(cardElement);
 });
 
@@ -112,15 +117,11 @@ function handleAddCardFormSubmit(evt) {
   const name = newCardTitleInput.value;
   const link = newCardImageLinkInput.value;
 
-  const card = new Card(
-    {
-      name,
-      link,
-    },
-    "#card-template",
-    handleImageClick
-  );
-  const cardElement = card.generateCard();
+  const cardElement = createCard({
+    name,
+    link,
+  });
+
   galleryList.prepend(cardElement);
   evt.target.reset();
   cardFormValidator.toggleButtonState();
@@ -157,11 +158,11 @@ const options = {
   errorClass: "modal__input-error_active",
 };
 
-const editFormModal = document.querySelector("#edit-modal");
-const cardFormModal = document.querySelector("#add-modal");
+const editProfileForm = document.querySelector("#editProfile-modal-form");
+const addCardForm = document.querySelector("#addCard-modal-form");
 
-const editFormValidator = new FormValidator(options, editFormModal);
-const cardFormValidator = new FormValidator(options, cardFormModal);
+const editFormValidator = new FormValidator(options, editProfileForm);
+const cardFormValidator = new FormValidator(options, addCardForm);
 
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
