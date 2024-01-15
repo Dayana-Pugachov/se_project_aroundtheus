@@ -1,5 +1,8 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import Popup from "../components/Popup.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const initialCards = [
   {
@@ -29,7 +32,7 @@ const initialCards = [
 ];
 
 /* SELECTORS */
-
+//
 const profileEditModal = document.querySelector("#edit-modal");
 const profileEditButton = document.querySelector(".profile__edit-button");
 
@@ -64,20 +67,20 @@ const previewDescription = previewImageModal.querySelector(
 /* EVENT LISTENERS */
 
 profileEditButton.addEventListener("click", () => {
-  openModal(profileEditModal);
+  profileFormPopup.openModal();
   editProfileTitleInput.value = profileTitle.textContent;
   editProfileDescriptionInput.value = profileDescription.textContent;
 });
 
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 
-profileAddButton.addEventListener("click", () => openModal(profileAddModal));
+profileAddButton.addEventListener("click", () => newCardFormPopup.openModal());
 
 profileAddFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
 /* FUNCTIONS */
-
-function openModal(modal) {
+//Have added these into Popup class
+/*function openModal(modal) {
   document.addEventListener("keydown", handleEsc);
   modal.classList.add("modal_opened");
 }
@@ -85,13 +88,20 @@ function openModal(modal) {
 function closeModal(modal) {
   document.removeEventListener("keydown", handleEsc);
   modal.classList.remove("modal_opened");
-}
+}*/
 
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  profileTitle.textContent = editProfileTitleInput.value;
+const profileFormPopup = new PopupWithForm({
+  popupSelector: "#edit-modal",
+  handleFormSubmit: handleProfileFormSubmit,
+});
+
+profileFormPopup.setEventListeners();
+
+function handleProfileFormSubmit(inputValues) {
+  console.log(inputValues);
+  profileTitle.textContent = editProfileTitleInput.value; //here I need to pass info from inputValues
   profileDescription.textContent = editProfileDescriptionInput.value;
-  closeModal(profileEditModal);
+  closeModal(profileEditModal); //
 }
 
 function handleImageClick(link, name) {
@@ -107,13 +117,33 @@ function createCard(data) {
   return cardElement;
 }
 
-initialCards.forEach((data) => {
+const galleryListSection = new Section(
+  {
+    items: initialCards,
+    renderer: (data) => {
+      const cardElement = createCard(data);
+
+      galleryListSection.addItem(cardElement);
+    },
+  },
+  ".gallery__list"
+);
+
+galleryListSection.renderItems();
+
+/*initialCards.forEach((data) => {
   const cardElement = createCard(data);
   galleryList.append(cardElement);
+});*/
+
+const newCardFormPopup = new PopupWithForm({
+  popupSelector: "#add-modal",
+  handleFormSubmit: handleAddCardFormSubmit,
 });
 
-function handleAddCardFormSubmit(evt) {
-  evt.preventDefault();
+newCardFormPopup.setEventListeners();
+
+function handleAddCardFormSubmit() {
   const name = newCardTitleInput.value;
   const link = newCardImageLinkInput.value;
 
@@ -125,10 +155,11 @@ function handleAddCardFormSubmit(evt) {
   galleryList.prepend(cardElement);
   evt.target.reset();
   cardFormValidator.toggleButtonState();
-  closeModal(profileAddModal);
+  newCardFormPopup.closeModal();
 }
 
-const modalList = Array.from(document.querySelectorAll(".modal"));
+//modified and added to Popup class
+/*const modalList = Array.from(document.querySelectorAll(".modal"));
 modalList.forEach((modal) => {
   modal.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("modal")) {
@@ -138,14 +169,15 @@ modalList.forEach((modal) => {
       closeModal(modal);
     }
   });
-});
+});*/
 
-const handleEsc = (evt) => {
+//added to Popup class
+/*const handleEsc = (evt) => {
   if (evt.key === "Escape") {
-    const openModal = document.querySelector(".modal_opened");
-    closeModal(openModal);
+    const openPopup = document.querySelector(".modal_opened");
+    closeModal(openPopup);
   }
-};
+};*/ //added this into Popup class
 
 //FORM INIT//
 
