@@ -14,10 +14,9 @@ export default class Popup {
   }
 
   _handleEsc(evt) {
+    //!!!!!!!!!
     if (evt.key === "Escape") {
-      const openPopup = document.querySelector(".modal_opened");
-      console.log(openPopup);
-      openPopup.closeModal();
+      this.closeModal();
     }
   }
 

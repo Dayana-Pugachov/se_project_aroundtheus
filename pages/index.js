@@ -3,6 +3,7 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 
 const initialCards = [
   {
@@ -101,14 +102,17 @@ function handleProfileFormSubmit(inputValues) {
   console.log(inputValues);
   profileTitle.textContent = editProfileTitleInput.value; //here I need to pass info from inputValues
   profileDescription.textContent = editProfileDescriptionInput.value;
-  closeModal(profileEditModal); //
+  profileFormPopup.closeModal(); //
 }
 
+const popupWithImage = new PopupWithImage({
+  popupSelector: "#previewModal",
+});
+
+popupWithImage.setEventListeners();
+
 function handleImageClick(link, name) {
-  openModal(previewImageModal);
-  previewImage.setAttribute("src", link);
-  previewImage.setAttribute("alt", name);
-  previewDescription.textContent = name;
+  popupWithImage.openModal(link, name);
 }
 
 function createCard(data) {
@@ -153,7 +157,7 @@ function handleAddCardFormSubmit() {
   });
 
   galleryList.prepend(cardElement);
-  evt.target.reset();
+  //evt.target.reset();
   cardFormValidator.toggleButtonState();
   newCardFormPopup.closeModal();
 }
