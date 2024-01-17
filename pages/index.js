@@ -103,13 +103,8 @@ profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
   console.log(inputValues);
-  userInfo.setUserInfo(
-    editProfileTitleInput.value,
-    editProfileDescriptionInput.value
-  );
-  /*profileTitle.textContent = editProfileTitleInput.value; //here I need to pass info from inputValues
-  profileDescription.textContent = editProfileDescriptionInput.value;*/
-  profileFormPopup.closeModal(); //
+  userInfo.setUserInfo(inputValues);
+  profileFormPopup.closeModal();
 }
 
 const popupWithImage = new PopupWithImage({
@@ -153,7 +148,6 @@ const newCardFormPopup = new PopupWithForm({
 });
 
 newCardFormPopup.setEventListeners();
-
 function handleAddCardFormSubmit() {
   const name = newCardTitleInput.value;
   const link = newCardImageLinkInput.value;
