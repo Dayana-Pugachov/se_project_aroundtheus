@@ -4,6 +4,7 @@ import Section from "../components/Section.js";
 import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 
 const initialCards = [
   {
@@ -36,7 +37,7 @@ const initialCards = [
 //
 const profileEditModal = document.querySelector("#edit-modal");
 const profileEditButton = document.querySelector(".profile__edit-button");
-
+//!!!!!!
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
@@ -67,17 +68,19 @@ const previewDescription = previewImageModal.querySelector(
 
 /* EVENT LISTENERS */
 
-profileEditButton.addEventListener("click", () => {
-  profileFormPopup.openModal();
-  editProfileTitleInput.value = profileTitle.textContent;
-  editProfileDescriptionInput.value = profileDescription.textContent;
+const userInfo = new UserInfo({
+  profileNameSelector: ".profile__title",
+  profileDescriptionSelector: ".profile__description",
 });
 
-profileFormElement.addEventListener("submit", handleProfileFormSubmit);
+profileEditButton.addEventListener("click", () => {
+  const info = userInfo.getUserInfo();
+  editProfileTitleInput.value = info.name;
+  editProfileDescriptionInput.value = info.description;
+  profileFormPopup.openModal();
+});
 
 profileAddButton.addEventListener("click", () => newCardFormPopup.openModal());
-
-profileAddFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
 /* FUNCTIONS */
 //Have added these into Popup class
@@ -100,8 +103,12 @@ profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
   console.log(inputValues);
-  profileTitle.textContent = editProfileTitleInput.value; //here I need to pass info from inputValues
-  profileDescription.textContent = editProfileDescriptionInput.value;
+  userInfo.setUserInfo(
+    editProfileTitleInput.value,
+    editProfileDescriptionInput.value
+  );
+  /*profileTitle.textContent = editProfileTitleInput.value; //here I need to pass info from inputValues
+  profileDescription.textContent = editProfileDescriptionInput.value;*/
   profileFormPopup.closeModal(); //
 }
 

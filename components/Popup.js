@@ -13,12 +13,11 @@ export default class Popup {
     this._popupElement.classList.remove("modal_opened");
   }
 
-  _handleEsc(evt) {
-    //!!!!!!!!!
+  _handleEsc = (evt) => {
     if (evt.key === "Escape") {
       this.closeModal();
     }
-  }
+  };
 
   setEventListeners() {
     this._popupElement.addEventListener("click", (evt) => {
