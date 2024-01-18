@@ -6,9 +6,6 @@ export default class UserInfo {
     );
   }
 
-  // "#name-input-js"
-  // "#description-input-js"
-
   getUserInfo() {
     return {
       name: this._profileName.textContent,

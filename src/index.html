@@ -6,15 +6,14 @@
     <meta name="description" content="Photo sharing website" />
     <meta name="keywords" content="Photos, Traveling, United States" />
     <meta name="author" content="Dayana Pugachov" />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="shortcut icon" href="../src/images/favicon.ico" />
     <title>Around the U.S.</title>
   </head>
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
         <img
-          src="./images/logo.svg"
+          src="<%=require('./images/logo.svg')%>"
           alt="'Around the U.S.' logo"
           class="header__logo"
         />
@@ -22,7 +21,7 @@
       <main class="content">
         <section class="profile page__section">
           <img
-            src="./images/jacques-cousteau.jpg"
+            src="<%=require('./images/jacques-cousteau.jpg')%>"
             alt="Jacques' avatar"
             class="profile__avatar"
           />
@@ -137,7 +136,11 @@
     <template id="card-template">
       <li class="card gallery__card">
         <img src="" alt="" class="card__image" />
-        <img src="./images/Trash.svg" alt="delete" class="card__trash-button" />
+        <img
+          src="<%=require('./images/Trash.svg')%>"
+          alt="delete"
+          class="card__trash-button"
+        />
         <div class="card__description">
           <h2 class="card__title"></h2>
           <button
@@ -148,7 +151,5 @@
         </div>
       </li>
     </template>
-
-    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>
