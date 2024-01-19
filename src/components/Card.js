@@ -20,8 +20,8 @@ export default class Card {
       this._handleImageClick(this._link, this._name);
     });
 
-    const likeButton = this._element.querySelector(".card__like-button");
-    likeButton.addEventListener("click", () => {
+    this._likeButton = this._element.querySelector(".card__like-button");
+    this._likeButton.addEventListener("click", () => {
       this._handleCardLike();
     });
 
@@ -36,8 +36,7 @@ export default class Card {
   }
 
   _handleCardLike() {
-    const likeButton = this._element.querySelector(".card__like-button");
-    likeButton.classList.toggle("card__like-button_active");
+    this._likeButton.classList.toggle("card__like-button_active");
   }
 
   generateCard() {

@@ -96,16 +96,10 @@ function createCard(data) {
 }
 
 newCardFormPopup.setEventListeners();
-function handleAddCardFormSubmit() {
-  const name = newCardTitleInput.value;
-  const link = newCardImageLinkInput.value;
 
-  const cardElement = createCard({
-    name,
-    link,
-  });
-
-  galleryList.prepend(cardElement);
+function handleAddCardFormSubmit(inputValues) {
+  const cardElement = createCard(inputValues);
+  galleryListSection.addItem(cardElement);
   newCardFormPopup.closeModal();
   cardFormValidator.toggleButtonState();
 }

@@ -20,13 +20,9 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     this._popupElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this._handleFormSubmit(this._getInputValues());
+      this._handleFormSubmit(this._getInputValues()); //this is where inputValues param comes from. That's why we consequently pass it in index.js inside handleFormSubmit(*here*);
     });
     super.setEventListeners();
-  }
-
-  openModal() {
-    super.openModal();
   }
 
   closeModal() {
