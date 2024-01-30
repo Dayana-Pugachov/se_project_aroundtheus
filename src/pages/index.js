@@ -5,6 +5,7 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 
 import "./index.css";
 
@@ -36,6 +37,11 @@ profileEditButton.addEventListener("click", () => {
   editProfileDescriptionInput.value = info.description;
   profileFormPopup.openModal();
 });
+//right now what getUserInfo() retuns is the hardcoded values from HTML
+//need to find a way to change that
+
+//right now what I see in the profile - are hardcoded <h1>s with my titles in HTML
+//unrelated to any existing method in the code, I want this user data to be just put in those <h1>s from the server
 
 // PROFILE FORM POPUP -----
 
@@ -111,3 +117,15 @@ const cardFormValidator = new FormValidator(options, addCardForm);
 
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
+
+//TRYING API -----
+
+const api = new Api({}); //I probably do need to pass something to the constructor
+
+api.loadUserInfo().then((userData) => {
+  userInfo.setUserInfo(userData.name, userData.about);
+});
+
+api.loadUserInfo().then((userData) => {
+  console.log(userData);
+});
