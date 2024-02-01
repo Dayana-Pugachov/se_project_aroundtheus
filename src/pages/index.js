@@ -23,12 +23,19 @@ import {
   editProfileForm,
   addCardForm,
 } from "../utils/constants.js";
+import ConfirmPopup from "../components/ConfirmPopup.js";
+
+const api = new Api({});
 
 // USER INFO -----
 
 const userInfo = new UserInfo({
   profileNameSelector: ".profile__title",
   profileDescriptionSelector: ".profile__description",
+});
+
+api.loadUserInfo().then((userData) => {
+  userInfo.setUserInfo(userData.name, userData.about);
 });
 
 profileEditButton.addEventListener("click", () => {
@@ -53,7 +60,11 @@ const profileFormPopup = new PopupWithForm({
 profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
-  userInfo.setUserInfo(inputValues);
+  api
+    .editUserInfo(inputValues.name, inputValues.description)
+    .then((userData) => {
+      userInfo.setUserInfo(userData.name, userData.about);
+    });
   profileFormPopup.closeModal();
   editFormValidator.toggleButtonState();
 }
@@ -71,20 +82,21 @@ function handleImageClick(link, name) {
 }
 
 // SECTION - GALLERY LIST -----
+let galleryListSection;
+api.getInitialCards().then((cardArr) => {
+  galleryListSection = new Section(
+    {
+      items: cardArr,
+      renderer: (data) => {
+        const cardElement = createCard(data);
 
-const galleryListSection = new Section(
-  {
-    items: initialCards,
-    renderer: (data) => {
-      const cardElement = createCard(data);
-
-      galleryListSection.addItem(cardElement);
+        galleryListSection.addItem(cardElement);
+      },
     },
-  },
-  ".gallery__list"
-);
-
-galleryListSection.renderItems();
+    ".gallery__list"
+  );
+  galleryListSection.renderItems();
+});
 
 // ADD NEW CARD FORM -----
 
@@ -93,10 +105,19 @@ const newCardFormPopup = new PopupWithForm({
   handleFormSubmit: handleAddCardFormSubmit,
 });
 
+function handleDeleteClick() {
+  confirmPopup.openModal();
+}
+
 profileAddButton.addEventListener("click", () => newCardFormPopup.openModal());
 
 function createCard(data) {
-  const card = new Card(data, "#card-template", handleImageClick);
+  const card = new Card(
+    data,
+    "#card-template",
+    handleImageClick,
+    handleDeleteClick
+  );
   const cardElement = card.generateCard();
   return cardElement;
 }
@@ -104,12 +125,27 @@ function createCard(data) {
 newCardFormPopup.setEventListeners();
 
 function handleAddCardFormSubmit(inputValues) {
-  const cardElement = createCard(inputValues);
-  galleryListSection.addItem(cardElement);
-  newCardFormPopup.closeModal();
-  cardFormValidator.toggleButtonState();
+  api.addNewCard(inputValues.name, inputValues.link).then((data) => {
+    const cardElement = createCard(data);
+    galleryListSection.addItem(cardElement);
+    newCardFormPopup.closeModal();
+    cardFormValidator.toggleButtonState();
+  });
 }
 
+//CONFIRMATION POPUP -----
+
+function handleYes(card) {
+  return getId(card);
+  api.deleteCard(card._id).then((card) => card.remove());
+}
+
+const confirmPopup = new ConfirmPopup({
+  popupSelector: "#confirmationModal",
+  handleYes: handleYes(),
+});
+
+confirmPopup.setEventListeners();
 //FORM INIT -----
 
 const editFormValidator = new FormValidator(options, editProfileForm);
@@ -120,12 +156,10 @@ cardFormValidator.enableValidation();
 
 //TRYING API -----
 
-const api = new Api({}); //I probably do need to pass something to the constructor
-
-api.loadUserInfo().then((userData) => {
+/*api.loadUserInfo().then((userData) => {
   userInfo.setUserInfo(userData.name, userData.about);
-});
+});*/
 
-api.loadUserInfo().then((userData) => {
-  console.log(userData);
+api.getInitialCards().then((cardArr) => {
+  console.log(cardArr);
 });

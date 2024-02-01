@@ -60,6 +60,10 @@
   font-weight: 900;
 }
 
+.modal__heading_confirm {
+  padding-bottom: 34px;
+}
+
 .modal__form {
   display: flex;
   flex-direction: column;
@@ -120,6 +124,12 @@
   font-weight: 400;
   padding: 18px 0;
   margin-top: 18px;
+}
+
+.modal__save_confirm {
+  max-width: 358px;
+  width: 100%;
+  margin-top: 0;
 }
 
 .modal__save_disabled {

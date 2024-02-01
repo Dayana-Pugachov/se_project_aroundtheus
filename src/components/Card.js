@@ -1,9 +1,10 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(data, cardSelector, handleImageClick, handleDeleteClick) {
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleDeleteClick = handleDeleteClick;
   }
 
   _getTemplate() {
@@ -25,9 +26,11 @@ export default class Card {
       this._handleCardLike();
     });
 
+    //my trash button
     const trashButton = this._element.querySelector(".card__trash-button");
     trashButton.addEventListener("click", () => {
-      this._handleDeleteCard();
+      this._handleDeleteClick();
+      //this._handleDeleteCard();
     });
   }
 
@@ -51,5 +54,9 @@ export default class Card {
     cardTitle.textContent = this._name;
 
     return this._element;
+  }
+
+  getId() {
+    return this._id; //don't compeletely understand how that works in relation to other classes and index.js
   }
 }
