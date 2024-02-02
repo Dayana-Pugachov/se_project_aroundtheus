@@ -125,16 +125,16 @@ function createCard(data) {
 
 function handleLikeClick(card) {
   const cardId = card.getId();
-  if (card.isLiked) {
+  if (card.getLikeStatus()) {
     api
       .unlikeCard(cardId)
       .then(() => {
-        card.handleCardLike();
+        card.setLikeStatus(false);
       })
       .catch((err) => console.log(`${err} Something is wrong`));
   } else {
     api.likeCard(cardId).then(() => {
-      card.handleCardLike();
+      card.setLikeStatus(true);
     });
   }
 }
@@ -155,7 +155,7 @@ function handleAddCardFormSubmit(inputValues) {
 function handleSubmit(card) {
   debugger;
   const cardId = card.getId();
-  api.deleteCard(cardId).then(() => card.remove());
+  api.deleteCard(cardId).then(() => card.removeCard());
 }
 
 const confirmPopup = new ConfirmPopup({

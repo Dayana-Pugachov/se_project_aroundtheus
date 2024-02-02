@@ -43,17 +43,18 @@ export default class Card {
     });
   }
 
-  /*_handleDeleteCard() {
+  removeCard() {
     this._element.remove();
-  }*/
-
-  handleCardLike() {
-    this._likeButton.classList.toggle("card__like-button_active");
   }
+
+  /*handleCardLike() {
+    this._likeButton.classList.toggle("card__like-button_active");
+  }*/
 
   generateCard() {
     this._element = this._getTemplate();
     this._setEventListeners();
+    this._renderLikes();
 
     const cardTitle = this._element.querySelector(".card__title");
     const cardImage = this._element.querySelector(".card__image");
@@ -66,6 +67,23 @@ export default class Card {
   }
 
   getId() {
-    return this._id; //don't compeletely understand how that works in relation to other classes and index.js
+    return this._id;
+  }
+
+  getLikeStatus() {
+    return this._isLiked;
+  }
+
+  setLikeStatus(status) {
+    this._isLiked = status;
+    this._renderLikes(); //not sure about using this one here
+  }
+
+  _renderLikes() {
+    if (this._isLiked) {
+      this._likeButton.classList.add("card__like-button_active");
+    } else {
+      this._likeButton.classList.remove("card__like-button_active");
+    }
   }
 }
