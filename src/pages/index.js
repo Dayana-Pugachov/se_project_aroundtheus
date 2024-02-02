@@ -105,8 +105,8 @@ const newCardFormPopup = new PopupWithForm({
   handleFormSubmit: handleAddCardFormSubmit,
 });
 
-function handleDeleteClick() {
-  confirmPopup.openModal();
+function handleDeleteClick(cardData) {
+  confirmPopup.openModal(cardData);
 }
 
 profileAddButton.addEventListener("click", () => newCardFormPopup.openModal());
@@ -116,10 +116,27 @@ function createCard(data) {
     data,
     "#card-template",
     handleImageClick,
-    handleDeleteClick
+    handleDeleteClick,
+    handleLikeClick
   );
   const cardElement = card.generateCard();
   return cardElement;
+}
+
+function handleLikeClick(card) {
+  const cardId = card.getId();
+  if (card.isLiked) {
+    api
+      .unlikeCard(cardId)
+      .then(() => {
+        card.handleCardLike();
+      })
+      .catch((err) => console.log(`${err} Something is wrong`));
+  } else {
+    api.likeCard(cardId).then(() => {
+      card.handleCardLike();
+    });
+  }
 }
 
 newCardFormPopup.setEventListeners();
@@ -135,14 +152,15 @@ function handleAddCardFormSubmit(inputValues) {
 
 //CONFIRMATION POPUP -----
 
-function handleYes(card) {
-  return getId(card);
-  api.deleteCard(card._id).then((card) => card.remove());
+function handleSubmit(card) {
+  debugger;
+  const cardId = card.getId();
+  api.deleteCard(cardId).then(() => card.remove());
 }
 
 const confirmPopup = new ConfirmPopup({
   popupSelector: "#confirmationModal",
-  handleYes: handleYes(),
+  handleSubmit,
 });
 
 confirmPopup.setEventListeners();
