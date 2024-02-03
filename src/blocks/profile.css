@@ -7,17 +7,37 @@
   padding-bottom: 51px;
 }
 
+.profile__avatar-wrapper {
+  display: grid;
+  border-radius: 50%;
+}
+
+.profile__avatar-wrapper:hover .profile__avatar {
+  opacity: 0.2;
+  cursor: pointer;
+}
+
+.profile__avatar-wrapper:hover .profile__avatar-edit-icon {
+  opacity: 1;
+  cursor: pointer;
+}
+
 .profile__avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 
-.profile__avatar:hover {
-  opacity: 0.8;
-  cursor: pointer;
+.profile__avatar-edit-icon {
+  width: 26px;
+  height: 26px;
+  border: none;
+  opacity: 0;
+  z-index: 1;
   background: transparent url("../images/pencil.svg") center no-repeat;
-  background-size: 26px 26px;
+  position: absolute;
+  align-self: center;
+  justify-self: center;
 }
 
 .profile__info {

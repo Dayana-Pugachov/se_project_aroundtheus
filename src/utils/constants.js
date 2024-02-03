@@ -24,20 +24,21 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
   },
 ];
+const galleryList = document.querySelector(".gallery__list");
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileFormElement = document.querySelector(".modal__form");
 const profileAddModal = document.querySelector("#add-modal");
 const profileAddButton = document.querySelector(".profile__add-button");
 const profileAvatar = document.querySelector(".profile__avatar");
+const profileAvatarWrapper = document.querySelector(".profile__avatar-wrapper");
 
+//INPUTS -----
 const editProfileTitleInput =
   profileFormElement.querySelector("#name-input-js");
 const editProfileDescriptionInput = profileFormElement.querySelector(
   "#description-input-js"
 );
-
-const galleryList = document.querySelector(".gallery__list");
 
 const newCardTitleInput = profileAddModal.querySelector("#cardTitle-input-js");
 const newCardImageLinkInput = profileAddModal.querySelector(
@@ -52,7 +53,7 @@ const options = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__input-error_active",
 };
-
+//FORMS -----
 const editProfileForm = document.querySelector("#editProfile-modal-form");
 const addCardForm = document.querySelector("#addCard-modal-form");
 const avatarForm = document.querySelector("#avatar-modal-form");
@@ -62,6 +63,7 @@ export {
   profileEditButton,
   profileAddButton,
   profileAvatar,
+  profileAvatarWrapper,
   editProfileTitleInput,
   editProfileDescriptionInput,
   galleryList,

@@ -15,6 +15,7 @@ import {
   profileEditButton,
   profileAddButton,
   profileAvatar,
+  profileAvatarWrapper,
   editProfileTitleInput,
   editProfileDescriptionInput,
   galleryList,
@@ -38,9 +39,7 @@ const userInfo = new UserInfo({
 });
 
 api.loadUserInfo().then((userData) => {
-  console.log(`${userData} - this is userData`);
-  //see what userData is and use `<%=require('${userData.src}')%>`
-  userInfo.setUserInfo(userData.name, userData.about, userData.link); //or userData.link
+  userInfo.setUserInfo(userData.name, userData.about, userData.avatar);
 });
 
 profileEditButton.addEventListener("click", () => {
@@ -49,7 +48,7 @@ profileEditButton.addEventListener("click", () => {
   editProfileDescriptionInput.value = info.description;
   profileFormPopup.openModal();
 });
-//right now what getUserInfo() retuns is the hardcoded values from HTML
+//right now what getUserInfo() returns is the hardcoded values from HTML
 //need to find a way to change that
 
 //right now what I see in the profile - are hardcoded <h1>s with my titles in HTML
@@ -65,10 +64,15 @@ const profileFormPopup = new PopupWithForm({
 profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
+  profileFormPopup.renderLoading(true);
   api
     .editUserInfo(inputValues.name, inputValues.description)
     .then((userData) => {
       userInfo.setUserInfo(userData.name, userData.about);
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      profileFormPopup.renderLoading(false, "Save");
     });
   profileFormPopup.closeModal();
   editFormValidator.toggleButtonState();
@@ -83,11 +87,13 @@ const avatarFormPopup = new PopupWithForm({
 
 avatarFormPopup.setEventListeners();
 
-profileAvatar.addEventListener("click", () => avatarFormPopup.openModal());
+profileAvatarWrapper.addEventListener("click", () =>
+  avatarFormPopup.openModal()
+);
 
 function handleAvatarFormSubmit(inputValue) {
   api.updateAvatar(inputValue.link).then((userData) => {
-    profileAvatar.src = userData.link;
+    profileAvatar.src = userData.avatar;
   });
   avatarFormPopup.closeModal();
   avatarFormValidator.toggleButtonState();
