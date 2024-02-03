@@ -71,6 +71,16 @@ export default class Api {
       headers: this._headers,
     }).then(this._checkResponse);
   }
+
+  updateAvatar(link) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        link: link,
+      }),
+    }).then(this._checkResponse);
+  }
 }
 
 //is this supposed to be in index.js?

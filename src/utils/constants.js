@@ -29,6 +29,7 @@ const profileEditButton = document.querySelector(".profile__edit-button");
 const profileFormElement = document.querySelector(".modal__form");
 const profileAddModal = document.querySelector("#add-modal");
 const profileAddButton = document.querySelector(".profile__add-button");
+const profileAvatar = document.querySelector(".profile__avatar");
 
 const editProfileTitleInput =
   profileFormElement.querySelector("#name-input-js");
@@ -54,11 +55,13 @@ const options = {
 
 const editProfileForm = document.querySelector("#editProfile-modal-form");
 const addCardForm = document.querySelector("#addCard-modal-form");
+const avatarForm = document.querySelector("#avatar-modal-form");
 
 export {
   initialCards,
   profileEditButton,
   profileAddButton,
+  profileAvatar,
   editProfileTitleInput,
   editProfileDescriptionInput,
   galleryList,
@@ -67,4 +70,5 @@ export {
   options,
   editProfileForm,
   addCardForm,
+  avatarForm,
 };

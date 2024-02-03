@@ -13,6 +13,7 @@ export default class Card {
     this._handleImageClick = handleImageClick;
     this._handleDeleteClick = handleDeleteClick;
     this._handleLikeClick = handleLikeClick;
+    this._isLiked = data.isLiked;
   }
 
   _getTemplate() {

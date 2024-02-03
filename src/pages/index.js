@@ -14,6 +14,7 @@ import {
   initialCards,
   profileEditButton,
   profileAddButton,
+  profileAvatar,
   editProfileTitleInput,
   editProfileDescriptionInput,
   galleryList,
@@ -22,6 +23,7 @@ import {
   options,
   editProfileForm,
   addCardForm,
+  avatarForm,
 } from "../utils/constants.js";
 import ConfirmPopup from "../components/ConfirmPopup.js";
 
@@ -32,10 +34,13 @@ const api = new Api({});
 const userInfo = new UserInfo({
   profileNameSelector: ".profile__title",
   profileDescriptionSelector: ".profile__description",
+  profileAvatarSelector: ".profile__avatar",
 });
 
 api.loadUserInfo().then((userData) => {
-  userInfo.setUserInfo(userData.name, userData.about);
+  console.log(`${userData} - this is userData`);
+  //see what userData is and use `<%=require('${userData.src}')%>`
+  userInfo.setUserInfo(userData.name, userData.about, userData.link); //or userData.link
 });
 
 profileEditButton.addEventListener("click", () => {
@@ -69,6 +74,25 @@ function handleProfileFormSubmit(inputValues) {
   editFormValidator.toggleButtonState();
 }
 
+//AVATAR FORM POPUP -----
+
+const avatarFormPopup = new PopupWithForm({
+  popupSelector: "#avatar-modal",
+  handleFormSubmit: handleAvatarFormSubmit,
+});
+
+avatarFormPopup.setEventListeners();
+
+profileAvatar.addEventListener("click", () => avatarFormPopup.openModal());
+
+function handleAvatarFormSubmit(inputValue) {
+  api.updateAvatar(inputValue.link).then((userData) => {
+    profileAvatar.src = userData.link;
+  });
+  avatarFormPopup.closeModal();
+  avatarFormValidator.toggleButtonState();
+}
+
 // POPUP WITH IMAGE -----
 
 const popupWithImage = new PopupWithImage({
@@ -86,10 +110,9 @@ let galleryListSection;
 api.getInitialCards().then((cardArr) => {
   galleryListSection = new Section(
     {
-      items: cardArr,
+      items: cardArr.reverse(),
       renderer: (data) => {
         const cardElement = createCard(data);
-
         galleryListSection.addItem(cardElement);
       },
     },
@@ -153,9 +176,11 @@ function handleAddCardFormSubmit(inputValues) {
 //CONFIRMATION POPUP -----
 
 function handleSubmit(card) {
-  debugger;
   const cardId = card.getId();
-  api.deleteCard(cardId).then(() => card.removeCard());
+  api.deleteCard(cardId).then(() => {
+    card.removeCard();
+    confirmPopup.closeModal();
+  });
 }
 
 const confirmPopup = new ConfirmPopup({
@@ -168,9 +193,11 @@ confirmPopup.setEventListeners();
 
 const editFormValidator = new FormValidator(options, editProfileForm);
 const cardFormValidator = new FormValidator(options, addCardForm);
+const avatarFormValidator = new FormValidator(options, avatarForm);
 
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
 
 //TRYING API -----
 

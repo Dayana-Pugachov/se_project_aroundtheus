@@ -20,11 +20,7 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            alt="Jacques' avatar"
-            class="profile__avatar"
-          />
+          <img src="" alt="Profile avatar" class="profile__avatar" />
           <div class="profile__info">
             <h1 class="profile__title"></h1>
             <button
@@ -121,6 +117,7 @@
       </div>
     </div>
 
+    <!--image modal-->
     <div class="modal modal_image-preview" id="previewModal">
       <div class="modal__wrapper">
         <button
@@ -133,7 +130,7 @@
       </div>
     </div>
 
-    <!--my confirmation modal-->
+    <!--confirmation modal-->
     <div class="modal" id="confirmationModal">
       <div class="modal__container">
         <button class="modal__close" type="button"></button>
@@ -141,6 +138,28 @@
         <button class="modal__save modal__save_confirm" type="button">
           Yes
         </button>
+      </div>
+    </div>
+
+    <!--avatar modal-->
+    <div class="modal" id="avatar-modal">
+      <div class="modal__container">
+        <button class="modal__close" type="button"></button>
+        <p class="modal__heading">Change profile picture</p>
+        <form class="modal__form" id="avatar-modal-form" novalidate>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="url"
+              name="link"
+              placeholder="Image link"
+              id="avatar-input-js"
+              required
+            />
+            <span class="modal__input-error avatar-input-js-error"></span>
+          </label>
+          <button class="modal__save" type="submit">Save</button>
+        </form>
       </div>
     </div>
 
