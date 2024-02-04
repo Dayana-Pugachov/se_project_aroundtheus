@@ -11,16 +11,11 @@ import "./index.css";
 
 // CONSTANTS IMPORTS -----
 import {
-  initialCards,
   profileEditButton,
   profileAddButton,
-  profileAvatar,
   profileAvatarWrapper,
   editProfileTitleInput,
   editProfileDescriptionInput,
-  galleryList,
-  newCardTitleInput,
-  newCardImageLinkInput,
   options,
   editProfileForm,
   addCardForm,
@@ -28,7 +23,30 @@ import {
 } from "../utils/constants.js";
 import ConfirmPopup from "../components/ConfirmPopup.js";
 
+//PAGE LOAD -----
+
 const api = new Api({});
+
+let galleryListSection;
+api
+  .loadPageContent()
+  .then(([userData, cardArr]) => {
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.setAvatar(userData.avatar);
+
+    galleryListSection = new Section(
+      {
+        items: cardArr.reverse(),
+        renderer: (data) => {
+          const cardElement = createCard(data);
+          galleryListSection.addItem(cardElement);
+        },
+      },
+      ".gallery__list"
+    );
+    galleryListSection.renderItems();
+  })
+  .catch((err) => console.error(err));
 
 // USER INFO -----
 
@@ -38,21 +56,13 @@ const userInfo = new UserInfo({
   profileAvatarSelector: ".profile__avatar",
 });
 
-api.loadUserInfo().then((userData) => {
-  userInfo.setUserInfo(userData.name, userData.about, userData.avatar);
-});
-
 profileEditButton.addEventListener("click", () => {
   const info = userInfo.getUserInfo();
   editProfileTitleInput.value = info.name;
   editProfileDescriptionInput.value = info.description;
+  editFormValidator.resetValidation(); //I'm here
   profileFormPopup.openModal();
 });
-//right now what getUserInfo() returns is the hardcoded values from HTML
-//need to find a way to change that
-
-//right now what I see in the profile - are hardcoded <h1>s with my titles in HTML
-//unrelated to any existing method in the code, I want this user data to be just put in those <h1>s from the server
 
 // PROFILE FORM POPUP -----
 
@@ -64,18 +74,18 @@ const profileFormPopup = new PopupWithForm({
 profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
-  profileFormPopup.renderLoading(true);
+  profileFormPopup.setButtonText("Saving...");
   api
     .editUserInfo(inputValues.name, inputValues.description)
     .then((userData) => {
       userInfo.setUserInfo(userData.name, userData.about);
+      profileFormPopup.closeModal();
+      editFormValidator.toggleButtonState();
     })
     .catch((err) => console.error(err))
     .finally(() => {
-      profileFormPopup.renderLoading(false, "Save");
+      profileFormPopup.setButtonText("Save");
     });
-  profileFormPopup.closeModal();
-  editFormValidator.toggleButtonState();
 }
 
 //AVATAR FORM POPUP -----
@@ -87,16 +97,24 @@ const avatarFormPopup = new PopupWithForm({
 
 avatarFormPopup.setEventListeners();
 
-profileAvatarWrapper.addEventListener("click", () =>
-  avatarFormPopup.openModal()
-);
+profileAvatarWrapper.addEventListener("click", () => {
+  avatarFormValidator.resetValidation();
+  avatarFormPopup.openModal();
+});
 
 function handleAvatarFormSubmit(inputValue) {
-  api.updateAvatar(inputValue.link).then((userData) => {
-    profileAvatar.src = userData.avatar;
-  });
-  avatarFormPopup.closeModal();
-  avatarFormValidator.toggleButtonState();
+  avatarFormPopup.setButtonText("Saving...");
+  api
+    .updateAvatar(inputValue.link)
+    .then((userData) => {
+      userInfo.setAvatar(userData.avatar);
+      avatarFormPopup.closeModal();
+      avatarFormValidator.toggleButtonState();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      avatarFormPopup.setButtonText("Save");
+    });
 }
 
 // POPUP WITH IMAGE -----
@@ -111,22 +129,6 @@ function handleImageClick(link, name) {
   popupWithImage.openModal(link, name);
 }
 
-// SECTION - GALLERY LIST -----
-let galleryListSection;
-api.getInitialCards().then((cardArr) => {
-  galleryListSection = new Section(
-    {
-      items: cardArr.reverse(),
-      renderer: (data) => {
-        const cardElement = createCard(data);
-        galleryListSection.addItem(cardElement);
-      },
-    },
-    ".gallery__list"
-  );
-  galleryListSection.renderItems();
-});
-
 // ADD NEW CARD FORM -----
 
 const newCardFormPopup = new PopupWithForm({
@@ -138,7 +140,10 @@ function handleDeleteClick(cardData) {
   confirmPopup.openModal(cardData);
 }
 
-profileAddButton.addEventListener("click", () => newCardFormPopup.openModal());
+profileAddButton.addEventListener("click", () => {
+  cardFormValidator.resetValidation();
+  newCardFormPopup.openModal();
+});
 
 function createCard(data) {
   const card = new Card(
@@ -160,33 +165,46 @@ function handleLikeClick(card) {
       .then(() => {
         card.setLikeStatus(false);
       })
-      .catch((err) => console.log(`${err} Something is wrong`));
+      .catch((err) => console.error(`${err} Something went wrong`));
   } else {
-    api.likeCard(cardId).then(() => {
-      card.setLikeStatus(true);
-    });
+    api
+      .likeCard(cardId)
+      .then(() => {
+        card.setLikeStatus(true);
+      })
+      .catch((err) => console.error(`${err} Something went wrong`));
   }
 }
 
 newCardFormPopup.setEventListeners();
 
 function handleAddCardFormSubmit(inputValues) {
-  api.addNewCard(inputValues.name, inputValues.link).then((data) => {
-    const cardElement = createCard(data);
-    galleryListSection.addItem(cardElement);
-    newCardFormPopup.closeModal();
-    cardFormValidator.toggleButtonState();
-  });
+  newCardFormPopup.setButtonText("Saving...");
+  api
+    .addNewCard(inputValues.name, inputValues.link)
+    .then((data) => {
+      const cardElement = createCard(data);
+      galleryListSection.addItem(cardElement);
+      newCardFormPopup.closeModal();
+      cardFormValidator.toggleButtonState();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      newCardFormPopup.setButtonText("Create");
+    });
 }
 
 //CONFIRMATION POPUP -----
 
 function handleSubmit(card) {
   const cardId = card.getId();
-  api.deleteCard(cardId).then(() => {
-    card.removeCard();
-    confirmPopup.closeModal();
-  });
+  api
+    .deleteCard(cardId)
+    .then(() => {
+      card.removeCard();
+    })
+    .catch((err) => console.error(err));
+  confirmPopup.closeModal();
 }
 
 const confirmPopup = new ConfirmPopup({
@@ -195,6 +213,7 @@ const confirmPopup = new ConfirmPopup({
 });
 
 confirmPopup.setEventListeners();
+
 //FORM INIT -----
 
 const editFormValidator = new FormValidator(options, editProfileForm);

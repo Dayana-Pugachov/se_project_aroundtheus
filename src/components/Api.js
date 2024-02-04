@@ -81,15 +81,8 @@ export default class Api {
       }),
     }).then(this._checkResponse);
   }
+
+  loadPageContent() {
+    return Promise.all([this.loadUserInfo(), this.getInitialCards()]);
+  }
 }
-
-//is this supposed to be in index.js?
-/*const api = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1",
-  headers: {
-    authorization: "5bd639c7-c1c3-496d-947f-3773995c6d1b",
-    "Content-Type": "application/json",
-  },
-});*/
-
-//I got it why they want me to use options in Api constructor - check it later
