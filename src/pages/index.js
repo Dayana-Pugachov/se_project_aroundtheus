@@ -25,7 +25,13 @@ import ConfirmPopup from "../components/ConfirmPopup.js";
 
 //PAGE LOAD -----
 
-const api = new Api({});
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "5bd639c7-c1c3-496d-947f-3773995c6d1b",
+    "Content-Type": "application/json",
+  },
+});
 
 let galleryListSection;
 api
@@ -46,7 +52,7 @@ api
     );
     galleryListSection.renderItems();
   })
-  .catch((err) => console.error(err));
+  .catch(console.error);
 
 // USER INFO -----
 
@@ -60,7 +66,7 @@ profileEditButton.addEventListener("click", () => {
   const info = userInfo.getUserInfo();
   editProfileTitleInput.value = info.name;
   editProfileDescriptionInput.value = info.description;
-  editFormValidator.resetValidation(); //I'm here
+  editFormValidator.resetValidation();
   profileFormPopup.openModal();
 });
 
@@ -74,7 +80,7 @@ const profileFormPopup = new PopupWithForm({
 profileFormPopup.setEventListeners();
 
 function handleProfileFormSubmit(inputValues) {
-  profileFormPopup.setButtonText("Saving...");
+  profileFormPopup.renderLoading(true);
   api
     .editUserInfo(inputValues.name, inputValues.description)
     .then((userData) => {
@@ -82,9 +88,9 @@ function handleProfileFormSubmit(inputValues) {
       profileFormPopup.closeModal();
       editFormValidator.toggleButtonState();
     })
-    .catch((err) => console.error(err))
+    .catch(console.error)
     .finally(() => {
-      profileFormPopup.setButtonText("Save");
+      profileFormPopup.renderLoading(false);
     });
 }
 
@@ -103,7 +109,7 @@ profileAvatarWrapper.addEventListener("click", () => {
 });
 
 function handleAvatarFormSubmit(inputValue) {
-  avatarFormPopup.setButtonText("Saving...");
+  avatarFormPopup.renderLoading(true);
   api
     .updateAvatar(inputValue.link)
     .then((userData) => {
@@ -111,9 +117,9 @@ function handleAvatarFormSubmit(inputValue) {
       avatarFormPopup.closeModal();
       avatarFormValidator.toggleButtonState();
     })
-    .catch((err) => console.error(err))
+    .catch(console.error)
     .finally(() => {
-      avatarFormPopup.setButtonText("Save");
+      avatarFormPopup.renderLoading(false);
     });
 }
 
@@ -165,21 +171,21 @@ function handleLikeClick(card) {
       .then(() => {
         card.setLikeStatus(false);
       })
-      .catch((err) => console.error(`${err} Something went wrong`));
+      .catch(console.error);
   } else {
     api
       .likeCard(cardId)
       .then(() => {
         card.setLikeStatus(true);
       })
-      .catch((err) => console.error(`${err} Something went wrong`));
+      .catch(console.error);
   }
 }
 
 newCardFormPopup.setEventListeners();
 
 function handleAddCardFormSubmit(inputValues) {
-  newCardFormPopup.setButtonText("Saving...");
+  newCardFormPopup.renderLoading(true);
   api
     .addNewCard(inputValues.name, inputValues.link)
     .then((data) => {
@@ -188,28 +194,28 @@ function handleAddCardFormSubmit(inputValues) {
       newCardFormPopup.closeModal();
       cardFormValidator.toggleButtonState();
     })
-    .catch((err) => console.error(err))
+    .catch(console.error)
     .finally(() => {
-      newCardFormPopup.setButtonText("Create");
+      newCardFormPopup.renderLoading(false);
     });
 }
 
 //CONFIRMATION POPUP -----
 
-function handleSubmit(card) {
+function handleConfirmSubmit(card) {
   const cardId = card.getId();
   api
     .deleteCard(cardId)
     .then(() => {
       card.removeCard();
+      confirmPopup.closeModal();
     })
-    .catch((err) => console.error(err));
-  confirmPopup.closeModal();
+    .catch(console.error);
 }
 
 const confirmPopup = new ConfirmPopup({
   popupSelector: "#confirmationModal",
-  handleSubmit,
+  handleConfirmSubmit,
 });
 
 confirmPopup.setEventListeners();
@@ -223,13 +229,3 @@ const avatarFormValidator = new FormValidator(options, avatarForm);
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
-
-//TRYING API -----
-
-/*api.loadUserInfo().then((userData) => {
-  userInfo.setUserInfo(userData.name, userData.about);
-});*/
-
-api.getInitialCards().then((cardArr) => {
-  console.log(cardArr);
-});

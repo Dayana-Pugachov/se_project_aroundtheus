@@ -1,12 +1,7 @@
-//const config = {}; //i don't really see that as a necessity at this point
-
 export default class Api {
-  constructor() {
-    this._baseUrl = "https://around-api.en.tripleten-services.com/v1";
-    this._headers = {
-      authorization: "5bd639c7-c1c3-496d-947f-3773995c6d1b",
-      "Content-Type": "application/json",
-    };
+  constructor({ baseUrl, headers }) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
   }
 
   _checkResponse(res) {

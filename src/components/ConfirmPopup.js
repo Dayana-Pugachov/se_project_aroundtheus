@@ -1,15 +1,15 @@
 import Popup from "./Popup.js";
 
 export default class ConfirmPopup extends Popup {
-  constructor({ popupSelector, handleSubmit }) {
+  constructor({ popupSelector, handleConfirmSubmit }) {
     super(popupSelector);
-    this._handleSubmit = handleSubmit; //handleSubmit = the func that executes api "DELETE" logic, it's like a renderer
+    this._handleConfirmSubmit = handleConfirmSubmit; //handleConfirmSubmit = the func that executes api "DELETE" logic, it's like a renderer
     this._confirmButton = document.querySelector(".modal__save_confirm");
   }
 
   setEventListeners() {
     this._confirmButton.addEventListener("click", () => {
-      this._handleSubmit(this._cardData);
+      this._handleConfirmSubmit(this._cardData);
     });
     super.setEventListeners();
   }
