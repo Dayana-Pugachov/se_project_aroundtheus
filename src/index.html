@@ -20,19 +20,18 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            alt="Jacques' avatar"
-            class="profile__avatar"
-          />
+          <div class="profile__avatar-wrapper">
+            <img src="" alt="Profile avatar" class="profile__avatar" />
+            <button class="profile__avatar-edit-icon"></button>
+          </div>
           <div class="profile__info">
-            <h1 class="profile__title">Jacques Cousteau</h1>
+            <h1 class="profile__title"></h1>
             <button
               class="profile__edit-button"
               type="button"
               aria-label="edit"
             ></button>
-            <p class="profile__description">Explorer</p>
+            <p class="profile__description"></p>
           </div>
           <button
             class="profile__add-button"
@@ -121,6 +120,7 @@
       </div>
     </div>
 
+    <!--image modal-->
     <div class="modal modal_image-preview" id="previewModal">
       <div class="modal__wrapper">
         <button
@@ -130,6 +130,39 @@
         ></button>
         <img src="#" alt="" class="modal__image" />
         <p class="modal__description"></p>
+      </div>
+    </div>
+
+    <!--confirmation modal-->
+    <div class="modal" id="confirmationModal">
+      <div class="modal__container">
+        <button class="modal__close" type="button"></button>
+        <p class="modal__heading modal__heading_confirm">Are you sure?</p>
+        <button class="modal__save modal__save_confirm" type="button">
+          Yes
+        </button>
+      </div>
+    </div>
+
+    <!--avatar modal-->
+    <div class="modal" id="avatar-modal">
+      <div class="modal__container">
+        <button class="modal__close" type="button"></button>
+        <p class="modal__heading">Change profile picture</p>
+        <form class="modal__form" id="avatar-modal-form" novalidate>
+          <label class="modal__field">
+            <input
+              class="modal__input"
+              type="url"
+              name="link"
+              placeholder="Image link"
+              id="avatar-input-js"
+              required
+            />
+            <span class="modal__input-error avatar-input-js-error"></span>
+          </label>
+          <button class="modal__save" type="submit">Save</button>
+        </form>
       </div>
     </div>
 
