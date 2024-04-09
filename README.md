@@ -4,11 +4,22 @@
 
 ## Project Features
 
-- Resposive design
+- Responsive design
 - Grid layout
 - Media-queries
 - Flat BEM file structure
+- Form validation
+- API requests
+- Class components
+
+## Project's screenshots
+
+![Project screenshot](./src/images/ReadME%20screeshots/screenshot1.png "Project screenshot")
+
+![Project screenshot](./src/images/ReadME%20screeshots/screenshot2.png "Project screenshot")
+
+![Project screenshot](./src/images/ReadME%20screeshots/screenshot3.png "Project screenshot")
 
 ### GitHub Pages Link
 
-https://dayana-pugachov.github.io/se_project_aroundtheus/
+[Around The U.S. - Here!](https://dayana-pugachov.github.io/se_project_aroundtheus/)
